@@ -1,0 +1,60 @@
+<!doctype html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{{ asset('/lib/foundation/css/foundation.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/ladecadanse.css') }}" rel="stylesheet">
+    
+    <title>La décadanse</title>
+
+</head>
+
+<body>
+    
+    <div id="wrapper">
+        <header>
+            <a href="{{ path('home') }}">La décadanse</a>
+
+            <nav>
+                <ul>                               
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li>Mon compte</li>
+                        <li><a href="{{ path('logout') }}">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{{ path('login') }}">Connexion</a></li>
+                    {% endif %}                               
+                </ul>
+            </nav>
+            <nav>
+                <ul>
+                    <li>Agenda</li>
+                    <li><a href="{{ path('organizers') }}">Organisateurs</a></li>
+                    <li>Lieux</li>
+                </ul>
+            </nav>
+        </header>  
+                    
+        <div id="content">
+        {% block content %}{% endblock %}
+        </div>
+
+        <footer class="footer">
+            <nav>
+                <ul>
+                    <li>Contact</li>
+                    <li>Charte éditoriale</li>
+                </ul>
+            </nav>
+        </footer>    
+    </div>
+    <!-- jQuery -->
+    <script src="{{ asset('/lib/jquery.min.js') }}"></script>
+
+</body>
+</html>

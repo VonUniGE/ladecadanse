@@ -1,0 +1,22 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Organisateurs{% endblock %}
+
+{% block content %}
+
+    <h1>Organisateurs</h1>
+
+    {% for organizer in organizers %}
+
+    <article>
+
+        <h2><a href="organizer/{{ organizer.idOrganisateur }}">{{ organizer.nom }}</a></h2>
+
+        <p>{{ organizer.adresse}}</p>
+        <p>{{ organizer.idPersonne }}</p>
+
+    </article>
+
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,13 @@
+body
+{
+    background: #5c7378;
+}
+
+#wrapper
+{
+    margin:1em auto 1em auto;
+    padding: 0.5em;
+    width:90%;
+    background: #FDFDFD;
+    border-radius: 3px;
+}

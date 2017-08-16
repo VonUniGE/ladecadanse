@@ -1,0 +1,23 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}organizer.nom{% endblock %}
+
+{% block content %}
+
+    <h1>{{ organizer.nom }}</h1>
+
+    <h2>événements</h2>
+    {% for event in events %}
+
+    <article>
+
+        <h2><a href="event/{{ event.idevenement }}">{{ event.titre }}</a></h2>
+
+        <p>{{ event.description }}</p>
+        <p>{{ event.adresse }}</p>
+
+    </article>
+
+    {% endfor %}
+
+{% endblock %}

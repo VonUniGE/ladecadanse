@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ event.titre }}{% endblock %}
+
+{% block content %}
+    <article>
+
+        <h1>{{ event.titre }}</h1>
+
+{{ event.description }}
+
+    </article>
+
+
+
+{% endblock %}
