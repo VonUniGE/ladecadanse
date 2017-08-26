@@ -7,60 +7,53 @@ class Organizer extends Entity
     /**
      * @var integer
      */
-    protected $idOrganisateur;
-    
-    protected $idPersonne; //User
-
-    protected $statut; 
+    protected $id;
+    protected $author; // User     
+    protected $status; // enum('actif', 'inactif', 'ancien') 
     protected $nom;
     protected $adresse;
     protected $region;
     protected $URL;
     protected $email;
-    protected $telephone;
-    protected $logo;
-    protected $photo;
     protected $presentation;
-    protected $date_ajout;
-    protected $date_derniere_modif;
+    protected $created;
+    protected $modified;
 
-    protected $author; // User    
-    protected $members; // User
-    protected $places; // Place
+//    protected $members; // User
+//    protected $places; // Place
     
-    public function getIdOrganisateur()
+    public function getId()
     {
-        return $this->idOrganisateur;
+        return $this->id;
     }
     
-    public function setIdOrganisateur($id)
+    public function setId($id)
     {
-        $this->idOrganisateur = $id;
+        $this->id = $id;
 
         return $this;
     }
 
-
-    public function getidPersonne()
+    public function getAuthor()
     {
-        return $this->idPersonne;
+        return $this->author;
     }
     
-    public function setidPersonne($idPersonne)
+    public function setAuthor($author)
     {
-        $this->idPersonne = $idPersonne;
+        $this->author = $author;
 
         return $this;
     } 
     
-    public function getStatut()
+    public function getStatus()
     {
-        return $this->statut;
+        return $this->status;
     }
     
-    public function setStatut($statut)
+    public function setStatus($status)
     {
-        $this->statut = $statut;
+        $this->status = $status;
 
         return $this;
     }
@@ -101,5 +94,63 @@ class Organizer extends Entity
         return $this;
     }
 
+    public function getURL()
+    {
+        return $this->URL;
+    }
+    
+    public function setURL($URL)
+    {
+        $this->URL = $URL;
 
+        return $this;
+    }
+    
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }    
+    
+    public function getPresentation()
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation($presentation)
+    {
+        $this->presentation = $presentation;
+
+        return $this;
+    }   
+    
+    public function getCreated()
+    {
+        return $this->created;
+    }
+    
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    } 
+    
+    public function getModified()
+    {
+        return $this->modified;
+    }
+    
+    public function setModified($modified)
+    {
+        $this->modified = $modified;
+
+        return $this;
+    } 
 }

@@ -7,14 +7,19 @@ class Event extends Entity
     /**
      * @var integer
      */
-    protected $idevenement;
-    
-    protected $idLieu;   // Venue
-    protected $idSalle; // Room
-    protected $idPersonne; // author User
+    protected $id;
 
-    protected $statut;
-    protected $genre;
+    protected $user_id; 
+    //protected $author; // User
+    
+    protected $place_id;     
+    protected $idSalle;     
+//    protected $place; // Place
+//     
+//    protected $organizers; // Organizer   
+    
+    protected $status;
+    protected $category;
     protected $titre;
     protected $dateEvenement;
     protected $nomLieu;
@@ -24,73 +29,100 @@ class Event extends Entity
     protected $region;
     protected $urlLieu;
     protected $horaire_debut;
-    protected $horaire_fin;
-    protected $horaire_complement;
+//    protected $horaire_fin;
+//    protected $horaire_complement;
     protected $description;
-    protected $flyer;
-    protected $image;
-    protected $prix;
-    protected $prelocations;
-    protected $URL1;
-    protected $URL2;
-    protected $ref;
-    protected $dateAjout;
-    protected $date_derniere_modif;
+//    protected $prix;
+//    protected $prelocations;
+//    protected $ref;
+    protected $created;
+    protected $modified;
 
-    static public $status = ['actif', 'complet', 'annule', 'inactif'];  
+    public static $statuses = ['actif', 'complet', 'annule', 'inactif'];  
+
     
-    protected $author; // User
-    protected $organizers; // Organizer
-    protected $place; // Place
-    
-    public function getidevenement()
+    public function getId()
     {
-        return $this->idevenement;
+        return $this->id;
     }
     
-    public function setidevenement($id)
+    public function setId($id)
     {
-        $this->idevenement = $id;
+        $this->id = $id;
 
         return $this;
     }
 
-    public function getidLieu()
+    public function getUserId()
     {
-        return $this->idLieu;
+        return $this->user_id;
     }
     
-    public function setidLieu($idLieu)
+    public function setUserId($userId)
     {
-        $this->idLieu = $idLieu;
+        $this->user_id = $userId;
 
         return $this;
+    } 
+    
+    public function getAuthor()
+    {
+        return $this->author;
     }
     
-    public function getidSalle()
-    {
-        return $this->idSalle;
-    }
-    
-    public function setidSalle($idSalle)
-    {
-        $this->idSalle = $idSalle;
-
+    public function setAuthor(User $author) {
+        $this->author = $author;
         return $this;
-    }
+    }    
 
-    public function getidPersonne()
+    public function getPlaceId()
     {
-        return $this->idPersonne;
+        return $this->place_id;
     }
     
-    public function setidPersonne($idPersonne)
+    public function setPlaceId($place_id)
     {
-        $this->idPersonne = $idPersonne;
+        $this->place_id = $place_id;
 
         return $this;
     }    
 
+    public function getIdSalle()
+    {
+        return $this->idSalle;
+    }
+    
+    public function setIdSalle($idSalle)
+    {
+        $this->idSalle = $idSalle;
+
+        return $this;
+    }       
+    
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+    
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }   
+    
     public function getTitre()
     {
         return $this->titre;
@@ -103,6 +135,30 @@ class Event extends Entity
         return $this;
     }
     
+    public function getDateEvenement()
+    {
+        return $this->dateEvenement;
+    }
+
+    public function setDateEvenement($dateEvenement)
+    {
+        $this->dateEvenement = $dateEvenement;
+
+        return $this;
+    } 
+
+    public function getNomLieu()
+    {
+        return $this->nomLieu;
+    }
+
+    public function setNomLieu($nomLieu)
+    {
+        $this->nomLieu = $nomLieu;
+
+        return $this;
+    } 
+
     public function getAdresse()
     {
         return $this->adresse;
@@ -113,7 +169,55 @@ class Event extends Entity
         $this->adresse = $adresse;
 
         return $this;
-    }       
+    }
+
+    public function getQuartier()
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier($quartier)
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+    
+    public function getLocalite()
+    {
+        return $this->localite_id;
+    }
+
+    public function setLocalite($localite_id)
+    {
+        $this->localite_id = $localite_id;
+
+        return $this;
+    } 
+    
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    public function setRegion($region)
+    {
+        $this->region = $region;
+
+        return $this;
+    }      
+       
+    public function getHoraire_debut()
+    {
+        return $this->horaire_debut;
+    }
+    
+    public function setHoraire_debut($horaire_debut)
+    {
+        $this->horaire_debut = $horaire_debut;
+
+        return $this;
+    }
 
     public function getDescription()
     {
@@ -128,18 +232,16 @@ class Event extends Entity
     }   
     
     // ...
-
-    public function setdate_derniere_modif($updated)
+    
+    public function getCreated()
     {
-        $this->date_derniere_modif = $updated;
+        return $this->created;
+    }
+    
+    public function setCreated($created)
+    {
+        $this->created = $created;
 
         return $this;
-    }
-
-    public function getdate_derniere_modif()
-    {
-        return $this->date_derniere_modif;
-    }
-
-    
+    }   
 }

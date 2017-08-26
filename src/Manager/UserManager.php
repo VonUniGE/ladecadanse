@@ -18,8 +18,8 @@ class UserManager extends Manager implements UserProviderInterface
      * @return \MicroCMS\Domain\User|throws an exception if no matching user is found
      */
     public function find($id) {
-        $sql = "select * from t_user where usr_id=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($id));
+        $sql = "select * from personne where idPersonne=?";
+        $row = $this->getDb()->fetchAssoc($sql, [$id]);
 
         if ($row)
             return $this->buildDomainObject($row);
@@ -32,8 +32,8 @@ class UserManager extends Manager implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $sql = "select * from t_user where usr_name=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($username));
+        $sql = "select * from personne where pseudo=?";
+        $row = $this->getDb()->fetchAssoc($sql, [$username]);
 
         if ($row)
             return $this->buildDomainObject($row);
@@ -69,11 +69,11 @@ class UserManager extends Manager implements UserProviderInterface
      */
     protected function buildDomainObject(array $row) {
         $user = new User();
-        $user->setId($row['usr_id']);
-        $user->setUsername($row['usr_name']);
-        $user->setPassword($row['usr_password']);
-        $user->setSalt($row['usr_salt']);
-        $user->setRole($row['usr_role']);
+        $user->setId($row['idPersonne']);
+        $user->setUsername($row['pseudo']);
+        $user->setPassword($row['mot_de_passe']);
+        $user->setSalt($row['gds']);
+        $user->setRole($row['role']);
         return $user;
     }
 }

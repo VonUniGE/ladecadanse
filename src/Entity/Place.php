@@ -4,83 +4,84 @@ namespace LaDecadanse\Entity;
 
 class Place extends \Ladecadanse\Entity\Entity
 {
-
-  
-    protected $organizers; // Organizer
-    private $events; // Event
-
     protected $idLieu;
-    protected $idpersonne;
+    protected $parent;
+    protected $author; 
     protected $statut; // enum('actif', 'inactif', 'ancien')
     
+    protected $nom;
+    protected $adress;
+    protected $disctrict;
+    protected $localite_id;
+    protected $region;
     
-    /**
- * idLieu
-idpersonne
-statut
-nom
-adresse
-quartier
-localite_id
-region
-lat
-lng
-horaire_general
-horaire_evenement
-entree
-categorie // 'bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre'
-telephone
-photo1
-photo2
-logo
-URL
-email
-plan
-acces_tpg
-dateAjout
-actif
-determinant
-date_derniere_modif
- */
-    protected $author; // User
+    protected $localization; // lat, lng
+    protected $categories; //'bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre'
+    protected $created;
+    protected $modified;
     
+    protected $type; // complex, venue, room
+ 
+    protected $organizers; // Organizer
+    private $events; // Event    
+    
+    static public $types = ['complex', 'venue', 'room'];
+
+
     /**
-     * Add manager
-     *
-     * @param Manager $manager
+    telephone
+    photo1
+    photo2
+    logo
+    URL
+    email
+    determinant
+     */
+
+
+    /**
+     * @param string $name
      * @return Place
      */
-    public function addManager(Manager $manager)
+    public function setNom($name)
     {
-        $this->managers[] = $manager;
-        $manager->addPlace($this);
-        
+        $this->nom = $name;
+
         return $this;
     }
 
     /**
-     * Remove manager
-     *
-     * @param Manager $manager
-     * @return Place
+     * @return string
      */
-    public function removeManager(Manager $manager)
+    public function getNom()
     {
-        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
-        $this->managers->removeElement($manager);
+        return $this->nom;
     }
 
-    /**
-     * Get manager
-     *
-     * @return ArrayCollection
-     */
-    public function getManagers()
+    public function getAuthor()
     {
-        return $this->managers;
+        return $this->author;
+    }
+    
+    public function setAuthor(User $author) {
+        $this->author = $author;
+        return $this;
+    }      
+    
+    public function getAdresse()
+    {
+        return $this->adresse;
     }
 
-    public function setRegion(Region $region)
+    public function setAdresse($adresse)
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }  
+
+    
+    public function setRegion($region)
     {
         $this->region = $region;
 
@@ -90,54 +91,8 @@ date_derniere_modif
     public function getRegion()
     {
         return $this->region;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Place
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set namePrefix
-     *
-     * @param string $namePrefix
-     * @return Place
-     */
-    public function setNamePrefix($namePrefix)
-    {
-        $this->namePrefix = $namePrefix;
-
-        return $this;
-    }
-
-    /**
-     * Get namePrefix
-     *
-     * @return string
-     */
-    public function getNamePrefix()
-    {
-        return $this->namePrefix;
-    }
-
+    }    
+    
    /**
      * Set category
      *
@@ -208,9 +163,9 @@ date_derniere_modif
      * @param string $address
      * @return Place
      */
-    public function setAddress($address)
+    public function setAddresse($address)
     {
-        $this->address = $address;
+        $this->addresse = $address;
 
         return $this;
     }
@@ -220,9 +175,9 @@ date_derniere_modif
      *
      * @return string
      */
-    public function getAddress()
+    public function getAddresse()
     {
-        return $this->address;
+        return $this->addresse;
     }
 
     /**
@@ -248,29 +203,6 @@ date_derniere_modif
         return $this->district;
     }
 
-    /**
-     * Set postalCode
-     *
-     * @param string $postalCode
-     * @return Place
-     */
-    public function setPostalCode($postalCode)
-    {
-        $this->postalCode = $postalCode;
-
-        return $this;
-    }
-
-    /**
-     * Get postalCode
-     *
-     * @return integer
-     */
-    public function getPostalCode()
-    {
-        return $this->postalCode;
-    }
-
       /**
      * Set addressDetails
      *
@@ -293,8 +225,6 @@ date_derniere_modif
     {
         return $this->addressDetails;
     }
-
-
 
       /**
      * Set city
@@ -342,31 +272,6 @@ date_derniere_modif
         return $this->localization;
     }
 
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return Place
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
     /**
      * Set availability
      *
@@ -388,39 +293,5 @@ date_derniere_modif
     public function getAvailability()
     {
         return $this->availability;
-    }
-
-    /**
-     * Add event
-     *
-     * @param \LaDecadanse\AppBundle\Entity\Event $event
-     *
-     * @return Place
-     */
-    public function addEvent(\LaDecadanse\AppBundle\Entity\Event $event)
-    {
-        $this->events[] = $event;
-
-        return $this;
-    }
-
-    /**
-     * Remove event
-     *
-     * @param \LaDecadanse\AppBundle\Entity\Event $event
-     */
-    public function removeEvent(\LaDecadanse\AppBundle\Entity\Event $event)
-    {
-        $this->events->removeElement($event);
-    }
-
-    /**
-     * Get events
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEvents()
-    {
-        return $this->events;
     }
 }

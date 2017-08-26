@@ -4,7 +4,7 @@ namespace Ladecadanse\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface
+class User extends Entity implements UserInterface
 {
     /**
      * User id.
@@ -33,7 +33,7 @@ class User implements UserInterface
      * @var string
      */
     private $salt;
-
+ 
     /**
      * Role.
      * Values : ROLE_USER or ROLE_ADMIN.
@@ -42,6 +42,13 @@ class User implements UserInterface
      */
     private $role;
 
+    protected $status; // enum('actif', 'inactif', 'ancien') 
+    protected $nom;    
+    protected $prenom;    
+    protected $affiliation;    
+    protected $region;    
+    protected $email;   
+    
     public function getId() {
         return $this->id;
     }
@@ -106,7 +113,79 @@ class User implements UserInterface
     {
         return array($this->getRole());
     }
+    
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
+    public function setStatus($status)
+    {
+        $this->status = $status;
 
+        return $this;
+    }
+    
+    public function getNom()
+    {
+        return $this->nom;
+    }
+    
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+    
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getAffiliation()
+    {
+        return $this->affiliation;
+    }
+    
+    public function setAffiliation($affiliation)
+    {
+        $this->affiliation = $affiliation;
+
+        return $this;
+    }
+    
+    public function getRegion()
+    {
+        return $this->region;
+    } 
+    
+    public function setRegion($region)
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    } 
+    
     /**
      * @inheritDoc
      */

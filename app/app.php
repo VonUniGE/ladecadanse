@@ -17,8 +17,20 @@ $app->register(new Silex\Provider\AssetServiceProvider(), array(
 ));
 
 $app->register(new Silex\Provider\SessionServiceProvider());
-$app->register(new Silex\Provider\SecurityServiceProvider(), array(
-    'security.firewalls' => array(
+//    role_hierarchy:
+//        ROLE_MEMBER:      ROLE_USER
+//        ROLE_ACTOR:      ROLE_MEMBER
+//        ROLE_EDITOR:       ROLE_ACTOR
+//        ROLE_ADMIN:       ROLE_EDITOR
+//        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+//groupes :
+//1	superadmin	accès à tout
+//4	admin	utilisé ?
+//6	auteur	accès à tous les contenus (11 pers.)
+//8	acteur	ajout et modif de ses even, éventuellement de sa f...
+//10	contributeur	? (33 personnes)
+//12	membre	favoris, commentaires
+$app->register(new Silex\Provider\SecurityServiceProvider(), ['security.firewalls' => array(
         'secured' => array(
             'pattern' => '^/',
             'anonymous' => true,
@@ -29,7 +41,20 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             },
         ),
     ),
-));
+    'security.role_hierarchy' => array(
+        'ROLE_MEMBER' => ['ROLE_USER'],
+        'ROLE_ACTOR' => ['ROLE_MEMBER'],
+        'ROLE_EDITOR' => ['ROLE_ACTOR'],
+        'ROLE_ADMIN' => ['ROLE_EDITOR'],
+        'ROLE_SUPERADMIN' => ['ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH']        
+    ),
+    'security.access_rules' => [
+        ['^/admin', 'ROLE_ADMIN'],
+        ['^.*$', 'ROLE_USER'],
+       ],                    
+   ]);
+            
+$app->register(new Silex\Provider\FormServiceProvider());            
 
 // Register services.
 $app['manager.user'] = function ($app) {

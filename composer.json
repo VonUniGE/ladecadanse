@@ -2,10 +2,13 @@
     "require": {
         "silex/silex": "~2.0",
         "doctrine/dbal": "~2.5",
-        "twig/twig": "~1.34",
+        "twig/twig": "^1.34",
         "symfony/twig-bridge": "^3.3",
         "symfony/asset": "^3.3",
-        "symfony/security": "^3.2"
+        "symfony/security": "^3.3",
+        "symfony/form": "^3.3",
+        "symfony/translation": "^3.3",
+        "symfony/config": "^3.3"
     },
     "autoload": {
         "psr-4": {"Ladecadanse\\": "src"}

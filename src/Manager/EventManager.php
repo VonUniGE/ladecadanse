@@ -8,6 +8,7 @@ class EventManager extends Manager
 {
     private $organizerManager;    
     private $venueManager;    
+    private $userManager;    
 
     public function setOrganizerManager(OrganizerManager $organizerManager)
     {
@@ -17,7 +18,11 @@ class EventManager extends Manager
     public function setVenueManager(VenueManager $venueManager)
     {
         $this->venueManager = $venueManager;
-    }    
+    }
+    
+    public function setUserManager(UserManager $userManager) {
+        $this->userManager = $userManager;
+    } 
     
     public function findAllToday() {
         $sql = "select * from evenement WHERE dateEvenement = '2017-06-23' ORDER BY dateAjout DESC ";
@@ -85,10 +90,41 @@ class EventManager extends Manager
             throw new \Exception("No event matching id " . $id);
     }
     
+
+    public function save(Event $event) {
+        
+        // TODO: 
+        $eventData = array(
+            'idPersonne' => $event->getAuthor()->getId(),
+            'idLieu' => $event->getIdLieu(),
+            'statut' => $event->getStatut(),
+            'category' => $event->getCategory(),
+            'titre' => $event->getTitre(),
+            'dateEvenement' => $event->getDateEvenement()
+            );
+
+        if ($event->getId()) {
+            // The comment has already been saved : update it
+            $this->getDb()->update('evenement', $eventData, array('id' => $event->getId()));
+        } else {
+            // The comment has never been saved : insert it
+            $this->getDb()->insert('evenement', $eventData);
+            // Get the id of the newly created comment and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $event->setId($id);
+        }
+    }    
+    
     public function buildDomainObject(array $row)
     {
-        $event = new Event($row);     
-        
+        $event = new Event($row);  
+  
+        if (array_key_exists('idPersonne', $row)) {
+            // Find and set the associated author
+            $userId = $row['idPersonne'];
+            $user = $this->userManager->find($userId);
+            $event->setAuthor($user);
+        }        
 //        if (array_key_exists('idLieu', $row)) {         
 //            $venue = $this->venueManager->find($row['idLieu']);
 //            $event->setVenue($venue);
