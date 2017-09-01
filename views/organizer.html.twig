@@ -5,19 +5,31 @@
 {% block content %}
 
     <h1>{{ organizer.nom }}</h1>
-
-    <h2>événements</h2>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="organizer/form">Modifier</a>
+    {% endif %}
+    <h2>Événements</h2>
+    {% if events|length > 0 %}
+        
     {% for event in events %}
 
     <article>
 
-        <h2><a href="event/{{ event.idevenement }}">{{ event.titre }}</a></h2>
+        <h2><a href="event/{{ event.id }}">{{ event.titre }}</a></h2>
 
         <p>{{ event.description }}</p>
         <p>{{ event.adresse }}</p>
-
+        
+        <p>Organisateurs</p>
+        <ul>
+        {% for orga in event.organizers %}
+            <li>{{ orga.nom }} </li>
+        {% endfor %}
+        </ul>
     </article>
 
     {% endfor %}
+    
+    {% endif %}
 
 {% endblock %}

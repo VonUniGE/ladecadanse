@@ -18,7 +18,7 @@ class UserManager extends Manager implements UserProviderInterface
      * @return \MicroCMS\Domain\User|throws an exception if no matching user is found
      */
     public function find($id) {
-        $sql = "select * from personne where idPersonne=?";
+        $sql = "select * from user where id=?";
         $row = $this->getDb()->fetchAssoc($sql, [$id]);
 
         if ($row)
@@ -26,13 +26,30 @@ class UserManager extends Manager implements UserProviderInterface
         else
             throw new \Exception("No user matching id " . $id);
     }
+    
+
+    public function findMembers($id) {
+        $sql = "select user.* from user, user_organizer where user.id = user_organizer.user_id AND organizer_id=?";
+        $rows = $this->getDb()->fetchAll($sql, [$id]);
+
+        $members = [];
+        if ($rows)
+        {
+            foreach ($rows as $row)
+                $members[] = $this->buildDomainObject($row);
+            
+
+        }
+        
+        return $members;
+    }    
 
     /**
      * {@inheritDoc}
      */
     public function loadUserByUsername($username)
     {
-        $sql = "select * from personne where pseudo=?";
+        $sql = "select * from user where username=?";
         $row = $this->getDb()->fetchAssoc($sql, [$username]);
 
         if ($row)
@@ -68,12 +85,15 @@ class UserManager extends Manager implements UserProviderInterface
      * @return \Ladecadanse\Entity\User
      */
     protected function buildDomainObject(array $row) {
-        $user = new User();
-        $user->setId($row['idPersonne']);
-        $user->setUsername($row['pseudo']);
-        $user->setPassword($row['mot_de_passe']);
-        $user->setSalt($row['gds']);
-        $user->setRole($row['role']);
+        $user = new User($row);
+//        $user->setId($row['id']);
+//        $user->setUsername($row['username']);
+//        $user->setPassword($row['password']);
+//        $user->setSalt($row['salt']);
+//        $user->setRole($row['role']);
+        // TODO : status, nom...
+        // TODO : setOrganizers
+        
         return $user;
     }
 }

@@ -8,7 +8,9 @@
         "symfony/security": "^3.3",
         "symfony/form": "^3.3",
         "symfony/translation": "^3.3",
-        "symfony/config": "^3.3"
+        "symfony/config": "^3.3",
+        "symfony/var-dumper": "^3.3",
+        "silex/web-profiler": "^2.0"
     },
     "autoload": {
         "psr-4": {"Ladecadanse\\": "src"}

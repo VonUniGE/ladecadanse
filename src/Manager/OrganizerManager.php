@@ -6,33 +6,69 @@ use Ladecadanse\Entity\Organizer;
 
 class OrganizerManager extends Manager
 {
+    /**
+     * @var \Ladecadanse\Manager\UserManager
+     */
+    private $userManager;
+    
+    public function setUserManager(UserManager $userManager) {
+        $this->userManager = $userManager;
+    }
+    
     public function findAll() {
-        $sql = "select * from organisateur WHERE statut='actif' ORDER BY date_ajout DESC";
+        $sql = "select * from organizer WHERE status='actif' ORDER BY created DESC";
         $result = $this->db->fetchAll($sql);
         // Convert query result to an array of domain objects
         $o = [];
         foreach ($result as $row) {
-            $o[$row['idOrganisateur']] = $this->buildDomainObject($row);
+            $o[$row['id']] = $this->buildDomainObject($row);
         }
        
         return $o;
     }
     
     public function find($id) {
-        $sql = "select * from organisateur WHERE idOrganisateur=$id";
+        $sql = "select * from organizer WHERE id=$id";
         $result = $this->db->fetchAll($sql);
  
         return $this->buildDomainObject($result[0]);
     } 
 
+    public function findByEvent($id) {
+        $sql = "select organizer.* from organizer, event_organizer where organizer.id = event_organizer.organizer_id AND event_id=?";
+        $rows = $this->getDb()->fetchAll($sql, [$id]);
+
+        $organizers = [];
+        if ($rows)
+        {
+            foreach ($rows as $row)
+                $organizers[] = $this->buildDomainObject($row);
+            
+
+        }
+        
+        return $organizers;
+    }   
     
     public function buildDomainObject(array $row)
     {
+        /*
+         * row : id, user_id, status, nom, adresse, region, URL, email, presentation, created, modified
+         */
         $organizer = new Organizer($row);
 
+        // author
+        if (array_key_exists('user_id', $row)) {
+            // Find and set the associated author
+            $user = $this->userManager->find($row['user_id']);
+            $organizer->setAuthor($user);
+        }
+//        
+//        // members
+        $members = $this->userManager->findMembers($row['id']);
+        $organizer->setMembers($members);
+        
         // TODO: 
-        // author (1 : User)
-        // members (0-5 : User) utile partout
         // places (0-5 : Place) utile dans admin
         
         return $organizer;

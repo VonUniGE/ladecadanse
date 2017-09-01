@@ -9,14 +9,12 @@ class Event extends Entity
      */
     protected $id;
 
-    protected $user_id; 
-    //protected $author; // User
+    protected $author; // User
     
     protected $place_id;     
     protected $idSalle;     
-//    protected $place; // Place
-//     
-//    protected $organizers; // Organizer   
+//    protected $place; // Place   
+    protected $organizers; // Organizer   
     
     protected $status;
     protected $category;
@@ -97,7 +95,48 @@ class Event extends Entity
         $this->idSalle = $idSalle;
 
         return $this;
-    }       
+    }
+    
+    /**
+     * 
+     * @param \Ladecadanse\Entity\Organizer $organizer
+     * @return $this
+     */
+    public function addOrganizer(Organizer $organizer)
+    {
+        $this->organizers[] = $organizer;
+
+        return $this;
+    }
+
+    /**
+     * TODO
+     * Remove member
+     *
+     * @param \Ladecadanse\Entity\Organizer $organizer
+     */
+    public function removeMember(Organizer $organizer)
+    {
+    }
+
+    public function getOrganizers()
+    {
+        return $this->organizers;
+    }
+
+    /**
+     * @param \Ladecadanse\Entity\Organizer $organizer
+     * @return boolean
+     */
+    public function hasOrganizer(Organizer $organizer)
+    {
+        return in_array($organizer, $this->organizers); // , true
+    } 
+    
+    public function setOrganizers(array $organizers)
+    {
+        $this->organizers = $organizers;
+    }     
     
     public function getStatus()
     {
@@ -183,12 +222,12 @@ class Event extends Entity
         return $this;
     }
     
-    public function getLocalite()
+    public function getLocalite_id()
     {
         return $this->localite_id;
     }
 
-    public function setLocalite($localite_id)
+    public function setLocalite_id($localite_id)
     {
         $this->localite_id = $localite_id;
 
@@ -206,7 +245,19 @@ class Event extends Entity
 
         return $this;
     }      
-       
+    
+    public function getUrlLieu()
+    {
+        return $this->urlLieu;
+    }
+
+    public function setUrlLieu($urlLieu)
+    {
+        $this->urlLieu = $urlLieu;
+
+        return $this;
+    }
+    
     public function getHoraire_debut()
     {
         return $this->horaire_debut;
@@ -231,7 +282,6 @@ class Event extends Entity
         return $this;
     }   
     
-    // ...
     
     public function getCreated()
     {
@@ -243,5 +293,17 @@ class Event extends Entity
         $this->created = $created;
 
         return $this;
-    }   
+    }  
+    
+    public function getModified()
+    {
+        return $this->modified;
+    }
+    
+    public function setModified($modified)
+    {
+        $this->modified = $modified;
+
+        return $this;
+    }     
 }

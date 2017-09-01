@@ -30,7 +30,8 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 //8	acteur	ajout et modif de ses even, éventuellement de sa f...
 //10	contributeur	? (33 personnes)
 //12	membre	favoris, commentaires
-$app->register(new Silex\Provider\SecurityServiceProvider(), ['security.firewalls' => array(
+$app->register(new Silex\Provider\SecurityServiceProvider(), [
+    'security.firewalls' => array(
         'secured' => array(
             'pattern' => '^/',
             'anonymous' => true,
@@ -49,10 +50,22 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), ['security.firewall
         'ROLE_SUPERADMIN' => ['ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH']        
     ),
     'security.access_rules' => [
-        ['^/admin', 'ROLE_ADMIN'],
-        ['^.*$', 'ROLE_USER'],
-       ],                    
+        ['^/admin', 'ROLE_ADMIN']
+       ]          
    ]);
+  
+$app['security.voters'] = $app->extend('security.voters', function ($voters, $app) {
+    $voters[] = new \Ladecadanse\Voter\OrganizerVoter();
+
+    return $voters;
+});             
+            
+ 
+//$app['security.voters'] = $app->share($app->extend('security.voters', function ($voters, $app) {
+//    $voters[] = new \Ladecadanse\Voter\OrganizerVoter();
+//
+//    return $voters;
+//}));            
             
 $app->register(new Silex\Provider\FormServiceProvider());            
 
@@ -62,11 +75,14 @@ $app['manager.user'] = function ($app) {
 };            
             
 $app['manager.organizer'] = function ($app) {
-    return new Ladecadanse\Manager\OrganizerManager($app['db']);
+    $organizerManager = new Ladecadanse\Manager\OrganizerManager($app['db']);
+    $organizerManager->setUserManager($app['manager.user']);
+    return $organizerManager;
 };
 
 $app['manager.event'] = function ($app) {
     $eventManager = new Ladecadanse\Manager\EventManager($app['db']);
-    //$eventManager->setOrganizerManager($app['manager.organizer']);
+    $eventManager->setUserManager($app['manager.user']);
+    $eventManager->setOrganizerManager($app['manager.organizer']);
     return $eventManager;
 };

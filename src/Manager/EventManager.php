@@ -38,12 +38,12 @@ class EventManager extends Manager
     
     public function findAllByOrganizer($organizerId) {
         
-        $sql = "select * from evenement e, evenement_organisateur eo WHERE e.idevenement=eo.idEvenement AND eo.idOrganisateur = $organizerId ORDER BY dateAjout DESC ";
+        $sql = "select * from event e, event_organizer eo WHERE e.id = eo.event_id AND eo.organizer_id = $organizerId ORDER BY created DESC ";
         $result = $this->db->fetchAll($sql);
 
         $events = [];
         foreach ($result as $row) {
-            $events[$row['idevenement']] = $this->buildDomainObject($row);
+            $events[$row['id']] = $this->buildDomainObject($row);
         }
   
         return $events;        
@@ -119,21 +119,25 @@ class EventManager extends Manager
     {
         $event = new Event($row);  
   
-        if (array_key_exists('idPersonne', $row)) {
-            // Find and set the associated author
-            $userId = $row['idPersonne'];
-            $user = $this->userManager->find($userId);
+        // event author
+        if (array_key_exists('user_id', $row)) {
+
+            $user = $this->userManager->find($row['user_id']);
             $event->setAuthor($user);
-        }        
-//        if (array_key_exists('idLieu', $row)) {         
-//            $venue = $this->venueManager->find($row['idLieu']);
-//            $event->setVenue($venue);
-//        } 
+        }
+
+        // event organizers
+        $organizers = $this->organizerManager->findByEvent($row['id']);
+        $event->setOrganizers($organizers);  
         
         // TODO: 
-        // organizers (env 0-3) utiles dans fiche, admin
-        // place (0-1) utile partout
-        // author (1 User) 
+        // place (0-1) utile partout        
+//        if (array_key_exists('place_id', $row)) {         
+//            $place = $this->placeManager->find($row['place_id']);
+//            $event->setPlace($place);
+//        } 
+        
+
         
         return $event;  
     }

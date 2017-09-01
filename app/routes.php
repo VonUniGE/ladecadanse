@@ -16,8 +16,11 @@ $app->get('/organizers', function () use ($app) {
 })->bind('organizers');
 
 $app->get('/organizer/{id}', function ($id) use ($app) {
+     
     $organizer = $app['manager.organizer']->find($id);
-    
+//    if (!$app['security.authorization_checker']->isGranted('edit', $organizer))
+//        return;
+
     $events = $app['manager.event']->findAllByOrganizer($id);
     return $app['twig']->render('organizer.html.twig', ['organizer' => $organizer, 'events' => $events]);
 })->bind('organizer');

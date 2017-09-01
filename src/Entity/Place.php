@@ -6,7 +6,7 @@ class Place extends \Ladecadanse\Entity\Entity
 {
     protected $idLieu;
     protected $parent;
-    protected $author; 
+    protected $author; // User 
     protected $statut; // enum('actif', 'inactif', 'ancien')
     
     protected $nom;
@@ -23,7 +23,6 @@ class Place extends \Ladecadanse\Entity\Entity
     protected $type; // complex, venue, room
  
     protected $organizers; // Organizer
-    private $events; // Event    
     
     static public $types = ['complex', 'venue', 'room'];
 

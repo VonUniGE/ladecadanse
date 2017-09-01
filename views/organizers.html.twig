@@ -10,11 +10,20 @@
 
     <article>
 
-        <h2><a href="organizer/{{ organizer.idOrganisateur }}">{{ organizer.nom }}</a></h2>
+        <h2><a href="organizer/{{ organizer.id }}">{{ organizer.nom }}</a></h2>
 
-        <p>{{ organizer.adresse}}</p>
-        <p>{{ organizer.idPersonne }}</p>
-
+        <p>{{ organizer.adresse }}</p>
+        <p>{{ organizer.URL }}</p>
+        <p>{{ organizer.presentation }}</p>
+        <p>{{ organizer.author.username }}</p>
+        
+        <h3>Membres</h3>
+            <ul>
+                {% for member in organizer.members %}
+                <li>{{ member.username }}</li>
+                {% endfor %}
+            </ul>
+        
     </article>
 
     {% endfor %}
