@@ -1,61 +1,49 @@
 <?php
 
-namespace LaDecadanse\Entity;
+namespace Ladecadanse\Entity;
 
 class Place extends \Ladecadanse\Entity\Entity
 {
-    protected $idLieu;
-    protected $parent;
+    protected $id;
+    //protected $parent;
     protected $author; // User 
-    protected $statut; // enum('actif', 'inactif', 'ancien')
+    protected $status; // enum('actif', 'inactif', 'ancien')
     
-    protected $nom;
-    protected $adress;
-    protected $disctrict;
-    protected $localite_id;
-    protected $region;
+//    protected $type; // complex, venue, room
+//    static public $types = ['complex', 'venue', 'room'];
     
-    protected $localization; // lat, lng
-    protected $categories; //'bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre'
-    protected $created;
-    protected $modified;
-    
-    protected $type; // complex, venue, room
- 
+    protected $members; // User 
     protected $organizers; // Organizer
     
-    static public $types = ['complex', 'venue', 'room'];
+    protected $nom;
+    protected $adresse;
+    protected $quartier ;
+    protected $localite_id;
+    protected $region;
+//    protected $lat;
+//    protected $lng;
+//    protected $horaire_general;   
+   protected $categories; //'bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre'
+//    protected $telephone;
+//    protected $URL;
+//    protected $email;
+//    protected $determinant;   
+    protected $created;
+    protected $modified;
 
-
-    /**
-    telephone
-    photo1
-    photo2
-    logo
-    URL
-    email
-    determinant
-     */
-
-
-    /**
-     * @param string $name
-     * @return Place
-     */
-    public function setNom($name)
+    
+    public function getId()
     {
-        $this->nom = $name;
+        return $this->id;
+    }
+    
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNom()
-    {
-        return $this->nom;
-    }
 
     public function getAuthor()
     {
@@ -65,20 +53,170 @@ class Place extends \Ladecadanse\Entity\Entity
     public function setAuthor(User $author) {
         $this->author = $author;
         return $this;
-    }      
+    }
     
-    public function getAdresse()
+    public function getStatus()
     {
-        return $this->adresse;
+        return $this->status;
+    }
+    
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }   
+    
+    /**
+     * 
+     * @param \Ladecadanse\Entity\User $member
+     * @return $this
+     */
+    public function addMember(User $member)
+    {
+        $this->members[] = $member;
+
+        return $this;
     }
 
+    /**
+     * TODO
+     * Remove member
+     *
+     * @param \LaDecadanse\UserBundle\Entity\User $member
+     */
+    public function removeMember(User $member)
+    {
+    }
+
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    /**
+     * @param \Ladecadanse\Entity\User $member
+     * @return boolean
+     */
+    public function hasMember(User $member)
+    {
+        //dump($this->members);
+        
+        return in_array($member, $this->members); // , true
+    } 
+    
+    public function setMembers(array $members)
+    {
+        $this->members = $members;
+    }    
+
+    public function getOrganizers()
+    {
+        return $this->organizers;
+    }
+
+    /**
+     * @param \Ladecadanse\Entity\Organizer $organizer
+     * @return boolean
+     */
+    public function hasOrganizer(Organizer $organizer)
+    {
+        return in_array($organizer, $this->organizers); // , true
+    } 
+    
+    public function setOrganizers(array $organizers)
+    {
+        $this->organizers = $organizers;
+    }  
+    
+    /**
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }    
+    
+    /**
+     * @param string $name
+     * @return Place
+     */
+    public function setNom($name)
+    {
+        $this->nom = $name;
+
+        return $this;
+    }    
+    
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return Place
+     */
     public function setAdresse($adresse)
     {
         $this->adresse = $adresse;
 
         return $this;
-    }  
+    }
 
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * Set district
+     *
+     * @param string $district
+     * @return Place
+     */
+    public function setQuartier($quartier)
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    /**
+     * Get district
+     *
+     * @return string
+     */
+    public function getQuartier()
+    {
+        return $this->quartier;
+    }
+    
+      /**
+     * Set city
+     *
+     * @param string city
+     * @return Place
+     */
+    public function setLocalite_id($localite_id)
+    {
+        $this->localite_id = $localite_id;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string
+     */
+    public function getLocalite_id()
+    {
+        return $this->localite_id;
+    }
     
     public function setRegion($region)
     {
@@ -132,165 +270,28 @@ class Place extends \Ladecadanse\Entity\Entity
     {
         return $this->categories;
     }
-
-    /**
-     * Set presentation
-     *
-     * @param string $presentation
-     * @return Place
-     */
-    public function setPresentation($presentation)
+    
+    public function getCreated()
     {
-        $this->presentation = $presentation;
+        return $this->created;
+    }
+    
+    public function setCreated($created)
+    {
+        $this->created = $created;
 
         return $this;
-    }
-
-    /**
-     * Get presentation
-     *
-     * @return string
-     */
-    public function getPresentation()
+    } 
+    
+    public function getModified()
     {
-        return $this->presentation;
+        return $this->modified;
     }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     * @return Place
-     */
-    public function setAddresse($address)
+    
+    public function setModified($modified)
     {
-        $this->addresse = $address;
+        $this->modified = $modified;
 
         return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddresse()
-    {
-        return $this->addresse;
-    }
-
-    /**
-     * Set district
-     *
-     * @param string $district
-     * @return Place
-     */
-    public function setDistrict($district)
-    {
-        $this->district = $district;
-
-        return $this;
-    }
-
-    /**
-     * Get district
-     *
-     * @return string
-     */
-    public function getDistrict()
-    {
-        return $this->district;
-    }
-
-      /**
-     * Set addressDetails
-     *
-     * @param string addressDetails
-     * @return Place
-     */
-    public function setAddressDetails($addressDetails)
-    {
-        $this->addressDetails = $addressDetails;
-
-        return $this;
-    }
-
-    /**
-     * Get addressDetails
-     *
-     * @return string
-     */
-    public function getAddressDetails()
-    {
-        return $this->addressDetails;
-    }
-
-      /**
-     * Set city
-     *
-     * @param string city
-     * @return Place
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return string
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-        /**
-     * Set localization
-     *
-     * @param string localization
-     * @return Place
-     */
-    public function setLocalization($localization)
-    {
-        $this->localization = $localization;
-
-        return $this;
-    }
-
-    /**
-     * Get localization
-     *
-     * @return string
-     */
-    public function getLocalization()
-    {
-        return $this->localization;
-    }
-
-    /**
-     * Set availability
-     *
-     * @param string $availability
-     * @return Event
-     */
-    public function setAvailability($availability)
-    {
-        $this->availability = $availability;
-
-        return $this;
-    }
-
-    /**
-     * Get availability
-     *
-     * @return string
-     */
-    public function getAvailability()
-    {
-        return $this->availability;
-    }
+    }     
 }

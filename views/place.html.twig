@@ -1,20 +1,30 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}organizer.nom{% endblock %}
+{% block title %}place.nom{% endblock %}
 
 {% block content %}
 
-    <h1>{{ organizer.nom }}</h1>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="organizer/form">Modifier</a>
-    {% endif %}
-    
-    <p>Membres</p>
+    <h1>{{ place.nom }}</h1>
+
+        
+    <h2>Membres</h2>
     <ul>
-    {% for member in organizer.members %}
+    {% for member in place.members %}
         <li>{{ member.username }} </li>
     {% endfor %}
-    </ul>    
+    </ul>
+    
+    <h2>Organisateurs</h2>
+    <ul>
+    {% for orga in place.organizers %}
+        <li><a href="/organizer/{{ orga.id }}">{{ orga.nom }}</a></li>
+    {% endfor %}
+    </ul> 
+    
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="place/form">Modifier</a>
+    {% endif %}
+    
     
     <h2>Événements</h2>
     {% if events|length > 0 %}
@@ -27,6 +37,7 @@
 
         <p>{{ event.description }}</p>
         <p>{{ event.adresse }}</p>
+
         
         <p>Organisateurs</p>
         <ul>

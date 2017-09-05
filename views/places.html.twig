@@ -1,0 +1,21 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Organisateurs{% endblock %}
+
+{% block content %}
+
+    <h1>Lieux</h1>
+
+    {% for place in places %}
+
+    <article>
+
+        <h2><a href="place/{{ place.id }}">{{ place.nom }}</a></h2>
+
+        <p>{{ place.adresse }} ({{ place.quartier }}) - {{ place.localite_id }}</p>
+
+    </article>
+
+    {% endfor %}
+
+{% endblock %}

@@ -28,7 +28,7 @@ class UserManager extends Manager implements UserProviderInterface
     }
     
 
-    public function findMembers($id) {
+    public function findOrganizerMembers($id) {
         $sql = "select user.* from user, user_organizer where user.id = user_organizer.user_id AND organizer_id=?";
         $rows = $this->getDb()->fetchAll($sql, [$id]);
 
@@ -37,12 +37,24 @@ class UserManager extends Manager implements UserProviderInterface
         {
             foreach ($rows as $row)
                 $members[] = $this->buildDomainObject($row);
-            
-
         }
         
         return $members;
-    }    
+    }
+
+    public function findPlaceMembers($id) {
+        $sql = "select user.* from user, user_place where user.id = user_place.user_id AND place_id=?";
+        $rows = $this->getDb()->fetchAll($sql, [$id]);
+
+        $members = [];
+        if ($rows)
+        {
+            foreach ($rows as $row)
+                $members[] = $this->buildDomainObject($row);
+        }
+        
+        return $members;
+    }     
 
     /**
      * {@inheritDoc}

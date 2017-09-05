@@ -49,6 +49,22 @@ class OrganizerManager extends Manager
         
         return $organizers;
     }   
+
+    public function findByPlace($id) {
+        $sql = "select organizer.* from organizer, place_organizer where organizer.id = place_organizer.organizer_id AND place_id=?";
+        $rows = $this->getDb()->fetchAll($sql, [$id]);
+
+        $organizers = [];
+        if ($rows)
+        {
+            foreach ($rows as $row)
+                $organizers[] = $this->buildDomainObject($row);
+            
+
+        }
+        
+        return $organizers;
+    }   
     
     public function buildDomainObject(array $row)
     {
@@ -65,9 +81,9 @@ class OrganizerManager extends Manager
         }
 //        
 //        // members
-        $members = $this->userManager->findMembers($row['id']);
+        $members = $this->userManager->findOrganizerMembers($row['id']);
         $organizer->setMembers($members);
-        
+ 
         // TODO: 
         // places (0-5 : Place) utile dans admin
         

@@ -80,6 +80,14 @@ $app['manager.organizer'] = function ($app) {
     return $organizerManager;
 };
 
+$app['manager.place'] = function ($app) {
+    $placeManager = new Ladecadanse\Manager\PlaceManager($app['db']);
+    $placeManager->setUserManager($app['manager.user']);
+    $placeManager->setOrganizerManager($app['manager.organizer']);    
+    return $placeManager;
+};
+
+
 $app['manager.event'] = function ($app) {
     $eventManager = new Ladecadanse\Manager\EventManager($app['db']);
     $eventManager->setUserManager($app['manager.user']);
