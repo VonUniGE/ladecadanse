@@ -57,6 +57,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), [
 $app['security.voters'] = $app->extend('security.voters', function ($voters, $app) {
     $voters[] = new \Ladecadanse\Voter\OrganizerVoter();
     $voters[] = new \Ladecadanse\Voter\PlaceVoter();
+    $voters[] = new \Ladecadanse\Voter\EventVoter();
 
     return $voters;
 });             
@@ -89,5 +90,6 @@ $app['manager.event'] = function ($app) {
     $eventManager = new Ladecadanse\Manager\EventManager($app['db']);
     $eventManager->setUserManager($app['manager.user']);
     $eventManager->setOrganizerManager($app['manager.organizer']);
+    $eventManager->setPlaceManager($app['manager.place']);
     return $eventManager;
 };

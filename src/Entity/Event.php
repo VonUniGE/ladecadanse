@@ -8,15 +8,36 @@ class Event extends Entity
      * @var integer
      */
     protected $id;
-
-    protected $author; // User
-    
-    protected $place_id;     
+   
+    /**
+     *
+     * @var Place
+     */
+    protected $place;     
     protected $idSalle;     
-//    protected $place; // Place   
-    protected $organizers; // Organizer   
+
+    /**
+     *
+     * @var User
+     */
+    protected $author;
     
+    /**
+     *
+     * @var array Organizer
+     */
+    protected $organizers; 
+    
+    /**
+     *
+     * @var string enum('actif', 'inactif', 'annule', 'complet'
+     */
     protected $status;
+    
+    /**
+     *
+     * @var string fête, cinéma, théâtre, expos, divers
+     */
     protected $category;
     protected $titre;
     protected $dateEvenement;
@@ -26,13 +47,15 @@ class Event extends Entity
     protected $localite_id;
     protected $region;
     protected $urlLieu;
+    
     protected $horaire_debut;
-//    protected $horaire_fin;
-//    protected $horaire_complement;
+    protected $horaire_fin;
+    protected $horaire_complement;
     protected $description;
-//    protected $prix;
-//    protected $prelocations;
-//    protected $ref;
+    protected $prix;
+    protected $prelocations;
+    protected $ref;
+    
     protected $created;
     protected $modified;
 
@@ -73,14 +96,14 @@ class Event extends Entity
         return $this;
     }    
 
-    public function getPlaceId()
+    public function getPlace()
     {
-        return $this->place_id;
+        return $this->place;
     }
     
-    public function setPlaceId($place_id)
+    public function setPlace($place)
     {
-        $this->place_id = $place_id;
+        $this->place = $place;
 
         return $this;
     }    
@@ -270,6 +293,30 @@ class Event extends Entity
         return $this;
     }
 
+    public function getHoraire_fin()
+    {
+        return $this->horaire_fin;
+    }
+    
+    public function setHoraire_fin($horaire_fin)
+    {
+        $this->horaire_fin = $horaire_fin;
+
+        return $this;
+    } 
+    
+    public function getHoraire_complement()
+    {
+        return $this->horaire_complement;
+    }
+    
+    public function setHoraire_complement($horaire_complement)
+    {
+        $this->horaire_complement = $horaire_complement;
+
+        return $this;
+    }    
+    
     public function getDescription()
     {
         return $this->description;
@@ -281,7 +328,42 @@ class Event extends Entity
 
         return $this;
     }   
-    
+ 
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+
+    public function setPrix($prix)
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }   
+
+    public function getPrelocations()
+    {
+        return $this->prelocations;
+    }
+
+    public function setPrelocations($prelocations)
+    {
+        $this->prelocations = $prelocations;
+
+        return $this;
+    }   
+
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+
+        return $this;
+    }       
     
     public function getCreated()
     {

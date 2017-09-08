@@ -43,8 +43,6 @@ class EventVoter extends Voter
                 return $this->canEdit($event, $user);
         }     
         
-
-
         return false;
 
     }      
@@ -60,34 +58,34 @@ class EventVoter extends Voter
 
     private function canEdit(\Ladecadanse\Entity\Event $event, User $user)
     {       
-        $event_users_managers = array();
         $event_organizers = $event->getOrganizers();
-        
-        // TODO membres des organisateurs liés à l'even
+
+        // membres des organisateurs liés à l'even        
+        $event_organizers_users = [];
         foreach ($event_organizers as $organizer)
         {
-            $event_users_managers = array_merge($event_users_managers, $manager->getMembers()->toArray());
+            $event_organizers_users = array_merge($event_organizers_users, $organizer->getMembers());
         }
         
-        // TODO membres des organisateurs du lieu de l'even
-        $event_users_place_managers = array();
-        $place_managers = $event->getPlace()->getManagers();
-        
-        foreach ($place_managers->toArray() as $manager)
+        // membres des organisateurs du lieu de l'even
+        $place_organizers = $event->getPlace()->getOrganizers();      
+        //TODO ôter doublons
+        $event_place_organizers_users = [];
+        foreach ($place_organizers as $organizer)
         {
-            $event_users_place_managers = array_merge($event_users_place_managers, $manager->getMembers()->toArray());
+            $event_place_organizers_users = array_merge($event_place_organizers_users, $organizer->getMembers());
         }
         
-        // TODO membres du lieu de l'even
-
+        // membres du lieu de l'even
+        $event_place_users = $event->getPlace()->getMembers();
+        
         // au moins éditeur, auteur; membre du lieu de l'even ou membre d'un des orga de l'even
         if (
         ($user->hasRole('ROLE_SUPERADMIN') || $user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_EDITOR')) ||
         $user == $event->getAuthor() ||
-        ( $user->hasRole('ROLE_ACTOR') && (in_array($user, $event_users_managers, true) || in_array($user, $event_users_place_managers, true)))
+        ( $user->hasRole('ROLE_ACTOR') && (in_array($user, $event_organizers_users) || in_array($user, $event_place_organizers_users) || in_array($user, $event_place_users)))
         )
         {
-            //dump($user);
             return true;
         }
     }    

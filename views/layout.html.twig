@@ -39,6 +39,9 @@
                     <li>Lieux</li>
                 </ul>
             </nav>
+            {% if is_granted('ROLE_ACTOR') %}
+                <a href="">Ajouter un événement</a>
+            {% endif %}                    
         </header>  
                     
         <div id="content">

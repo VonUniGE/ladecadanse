@@ -24,10 +24,16 @@
     <article>
 
         <h2><a href="event/{{ event.id }}">{{ event.titre }}</a></h2>
-
+        {% if is_granted('edit', event) %}
+            <a href="event/form">Modifier</a>
+        {% endif %}        
+        <h3>{{ event.dateEvenement|date('D j M Y') }}</h3>
         <p>{{ event.description }}</p>
-        <p>{{ event.adresse }}</p>
         
+        <p>{{ event.horaire_debut|date('G i') }} - {{ event.horaire_fin|date('G i') }} {{ event.horaire_complement }} <br />{{ event.prix }}</p>
+
+        <p>{{ event.category }}</p>
+        <p>{{ event.nomLieu }}</p>
         <p>Organisateurs</p>
         <ul>
         {% for orga in event.organizers %}

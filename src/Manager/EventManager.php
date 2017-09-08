@@ -9,6 +9,7 @@ class EventManager extends Manager
     private $organizerManager;    
     private $venueManager;    
     private $userManager;    
+    private $placeManager;    
 
     public function setOrganizerManager(OrganizerManager $organizerManager)
     {
@@ -22,6 +23,10 @@ class EventManager extends Manager
     
     public function setUserManager(UserManager $userManager) {
         $this->userManager = $userManager;
+    }
+    
+    public function setPlaceManager(PlaceManager $placeManager) {
+        $this->placeManager = $placeManager;
     } 
     
     public function findAllToday() {
@@ -130,15 +135,12 @@ class EventManager extends Manager
         $organizers = $this->organizerManager->findByEvent($row['id']);
         $event->setOrganizers($organizers);  
         
-        // TODO: 
         // place (0-1) utile partout        
-//        if (array_key_exists('place_id', $row)) {         
-//            $place = $this->placeManager->find($row['place_id']);
-//            $event->setPlace($place);
-//        } 
-        
+        if (array_key_exists('place_id', $row) && !empty($row['place_id'])) {         
+            $place = $this->placeManager->find($row['place_id']);
+            $event->setPlace($place);
+        } 
 
-        
         return $event;  
     }
 }

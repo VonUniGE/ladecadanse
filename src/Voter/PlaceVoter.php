@@ -68,13 +68,13 @@ class PlaceVoter extends Voter
         // membres directs du lieu        
         $place_users = $place->getMembers();
         
-        dump($place_users);
+        //dump($place_users);
         
         // tous les users pouvant y accéder, c-à-d tous les membres des managers associés à ce lieu
         $place_users_organizers = array();
         $place_organizers = $place->getOrganizers();
         
-        dump($place_organizers);
+        //dump($place_organizers);
         
         $place_organizers_users = [];
         foreach ($place_organizers as $organizer)
