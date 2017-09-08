@@ -37,8 +37,8 @@ $app->get('/places', function () use ($app) {
 $app->get('/place/{id}', function ($id) use ($app) {
      
     $place = $app['manager.place']->find($id);
-//    if (!$app['security.authorization_checker']->isGranted('edit', $organizer))
-//        return;
+    if (!$app['security.authorization_checker']->isGranted('edit', $place))
+        return;
 
     $events = []; //$app['manager.event']->findAllByPlace($id);
     return $app['twig']->render('place.html.twig', ['place' => $place, 'events' => $events]);

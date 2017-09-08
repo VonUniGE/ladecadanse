@@ -56,16 +56,13 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), [
   
 $app['security.voters'] = $app->extend('security.voters', function ($voters, $app) {
     $voters[] = new \Ladecadanse\Voter\OrganizerVoter();
+    $voters[] = new \Ladecadanse\Voter\PlaceVoter();
 
     return $voters;
 });             
             
  
-//$app['security.voters'] = $app->share($app->extend('security.voters', function ($voters, $app) {
-//    $voters[] = new \Ladecadanse\Voter\OrganizerVoter();
-//
-//    return $voters;
-//}));            
+           
             
 $app->register(new Silex\Provider\FormServiceProvider());            
 

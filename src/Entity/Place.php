@@ -6,14 +6,33 @@ class Place extends \Ladecadanse\Entity\Entity
 {
     protected $id;
     //protected $parent;
-    protected $author; // User 
-    protected $status; // enum('actif', 'inactif', 'ancien')
+    
+    /**
+     *
+     * @var User 
+     */
+    protected $author;
+    
+    /**
+     *
+     * @var string enum('actif', 'inactif', 'ancien')
+     */
+    protected $status; // 
     
 //    protected $type; // complex, venue, room
 //    static public $types = ['complex', 'venue', 'room'];
     
+    /**
+     *
+     * @var array User
+     */
     protected $members; // User 
-    protected $organizers; // Organizer
+    
+    /**
+     *
+     * @var array Organizer
+     */
+    protected $organizers;
     
     protected $nom;
     protected $adresse;
@@ -22,8 +41,13 @@ class Place extends \Ladecadanse\Entity\Entity
     protected $region;
 //    protected $lat;
 //    protected $lng;
-//    protected $horaire_general;   
-   protected $categories; //'bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre'
+//    protected $horaire_general;
+   
+    /**
+    *
+    * @var string 'bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre'
+    */
+   protected $categories;
 //    protected $telephone;
 //    protected $URL;
 //    protected $email;
