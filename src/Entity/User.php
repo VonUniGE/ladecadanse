@@ -36,18 +36,24 @@ class User extends Entity implements UserInterface
  
     /**
      * Role.
-     * Values : ROLE_USER or ROLE_ADMIN.
+     * Values : ROLE_USER, etc.
      *
      * @var string
      */
     private $role;
 
-    protected $status; // enum('actif', 'inactif', 'ancien') 
+    /**
+     *
+     * @var string enum('actif', 'inactif', 'ancien')  
+     */
+    protected $status;
     protected $nom;    
     protected $prenom;    
     protected $affiliation;    
     protected $region;    
     protected $email;   
+    protected $created;
+    protected $modified;
     
     public function getId() {
         return $this->id;
@@ -193,6 +199,30 @@ class User extends Entity implements UserInterface
 
         return $this;
     } 
+    
+    public function getCreated()
+    {
+        return $this->created;
+    }
+    
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    } 
+    
+    public function getModified()
+    {
+        return $this->modified;
+    }
+    
+    public function setModified($modified)
+    {
+        $this->modified = $modified;
+
+        return $this;
+    }  
     
     /**
      * @inheritDoc

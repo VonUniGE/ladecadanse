@@ -65,6 +65,15 @@ $app->match('/event/add', function (Request $request) use ($app) {
         'commentForm' => $commentFormView));
 })->bind('event_add');
 
+$app->get('/user/{id}', function ($id) use ($app) {
+     
+    $user = $app['manager.user']->find($id);
+    if (!$app['security.authorization_checker']->isGranted('edit', $user))
+        return;
+
+    return $app['twig']->render('user.html.twig', ['user' => $user]);
+})->bind('user');
+
 //TODO:
 //admin
 //admin/organizers

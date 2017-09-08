@@ -58,6 +58,7 @@ $app['security.voters'] = $app->extend('security.voters', function ($voters, $ap
     $voters[] = new \Ladecadanse\Voter\OrganizerVoter();
     $voters[] = new \Ladecadanse\Voter\PlaceVoter();
     $voters[] = new \Ladecadanse\Voter\EventVoter();
+    $voters[] = new \Ladecadanse\Voter\UserVoter();
 
     return $voters;
 });             

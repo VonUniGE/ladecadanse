@@ -24,7 +24,7 @@
             <nav>
                 <ul>                               
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <li>{{ app.user.username }}</li>
+                        <li><a href="{{ path('user', {'id':app.user.id}) }}">{{ app.user.username }}</a></li>
                         <li><a href="{{ path('logout') }}">Déconnexion</a></li>
                     {% else %}
                         <li><a href="{{ path('login') }}">Connexion</a></li>

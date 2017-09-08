@@ -1,0 +1,20 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}user.username{% endblock %}
+
+{% block content %}
+
+    <h1>{{ user.id }} {{ user.username }} ({{ user.role }})</h1>
+    {% if is_granted('edit', user) %}
+        <a href="user/form">Modifier</a>
+    {% endif %}
+
+
+
+    <article>
+{{ user.created }}
+    </article>
+
+
+
+{% endblock %}
