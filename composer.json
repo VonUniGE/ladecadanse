@@ -10,7 +10,9 @@
         "symfony/translation": "^3.3",
         "symfony/config": "^3.3",
         "symfony/var-dumper": "^3.3",
-        "silex/web-profiler": "^2.0"
+        "silex/web-profiler": "^2.0",
+        "symfony/security-csrf": "^3.3",
+        "twig/extensions": "^1.5"
     },
     "autoload": {
         "psr-4": {"Ladecadanse\\": "src"}

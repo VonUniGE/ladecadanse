@@ -32,8 +32,6 @@ class Organizer extends Entity
     protected $created;
     protected $modified;
 
-//    protected $places; // Place
-    
     public function getId()
     {
         return $this->id;
@@ -91,10 +89,8 @@ class Organizer extends Entity
      * @return boolean
      */
     public function hasMember(User $member)
-    {
-        //dump($this->members);
-        
-        return in_array($member, $this->members); // , true
+    {       
+        return in_array($member, $this->members);
     } 
     
     public function setMembers(array $members)

@@ -67,17 +67,21 @@ class EventVoter extends Voter
             $event_organizers_users = array_merge($event_organizers_users, $organizer->getMembers());
         }
         
-        // membres des organisateurs du lieu de l'even
-        $place_organizers = $event->getPlace()->getOrganizers();      
-        //TODO ôter doublons
-        $event_place_organizers_users = [];
-        foreach ($place_organizers as $organizer)
+        if (!empty($event->getPlace()))
         {
-            $event_place_organizers_users = array_merge($event_place_organizers_users, $organizer->getMembers());
-        }
+            // membres des organisateurs du lieu de l'even
+            $place_organizers = $event->getPlace()->getOrganizers();      
+            //TODO ôter doublons
+            $event_place_organizers_users = [];
+            foreach ($place_organizers as $organizer)
+            {
+                $event_place_organizers_users = array_merge($event_place_organizers_users, $organizer->getMembers());
+            }
         
-        // membres du lieu de l'even
-        $event_place_users = $event->getPlace()->getMembers();
+            // membres du lieu de l'even
+            $event_place_users = $event->getPlace()->getMembers();            
+        }
+
         
         // au moins éditeur, auteur; membre du lieu de l'even ou membre d'un des orga de l'even
         if (

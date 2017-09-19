@@ -1,6 +1,8 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Ladecadanse\Entity\Event;
+use Ladecadanse\Form\EventType;
 
 $app->get('/', function () use ($app) {
     
@@ -25,8 +27,6 @@ $app->get('/organizer/{id}', function ($id) use ($app) {
     return $app['twig']->render('organizer.html.twig', ['organizer' => $organizer, 'events' => $events]);
 })->bind('organizer');
 
-// TODO: organizer form
-
 $app->get('/places', function () use ($app) {
     $places = $app['manager.place']->findAll();
     
@@ -45,25 +45,48 @@ $app->get('/place/{id}', function ($id) use ($app) {
 })->bind('place');
 
 $app->match('/event/add', function (Request $request) use ($app) {
-    $commentFormView = null;
+    $eventFormView = null;
     if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
-        // A user is fully authenticated : he can add comments
-        $event = new Event();
-        $user = $app['user'];
-        $event->setAuthor($user);
-        $commentForm = $app['form.factory']->create(LaDecadanse\Form\EventType::class, $event);
-        $commentForm->handleRequest($request);
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+
+        // par défaut
+        $event = new Event([]);
+        $event->setAuthor($app['user']);
+        $event->setStatus('actif');
+        
+        // all active places, Place 
+        $options['places'] = $app['manager.place']->findAll();
+        $eventForm = $app['form.factory']->create(EventType::class, $event, $options);
+        $eventForm->handleRequest($request);
+        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
             $app['manager.event']->save($event);
             $app['session']->getFlashBag()->add('success', 'Your event was successfully added.');
         }
-        $commentFormView = $commentForm->createView();
+        $eventFormView = $eventForm->createView();
     }
     //$comments = $app['manager.event']->findAllByArticle($id);
 
     return $app['twig']->render('event_form.html.twig', array(
-        'commentForm' => $commentFormView));
+        'title' => 'Add event',
+        'eventForm' => $eventFormView));
 })->bind('event_add');
+
+
+// Edit an existing article
+$app->match('/event/{id}/edit', function($id, Request $request) use ($app) {
+    
+    $event = $app['manager.event']->find($id);
+    $eventForm = $app['form.factory']->create(EventType::class, $event);
+    $eventForm->handleRequest($request);
+    
+    if ($eventForm->isSubmitted() && $eventForm->isValid()) {
+        $app['manager.event']->save($event);
+        $app['session']->getFlashBag()->add('success', 'The event was successfully updated.');
+    }
+    
+    return $app['twig']->render('event_form.html.twig', array(
+        'title' => 'Edit event',
+        'eventForm' => $eventForm->createView()));
+})->bind('event_edit');
 
 $app->get('/user/{id}', function ($id) use ($app) {
      
@@ -74,11 +97,6 @@ $app->get('/user/{id}', function ($id) use ($app) {
     return $app['twig']->render('user.html.twig', ['user' => $user]);
 })->bind('user');
 
-//TODO:
-//admin
-//admin/organizers
-//admin/events
-//admin/users
 
 // Login form
 $app->get('/login', function(Request $request) use ($app) {

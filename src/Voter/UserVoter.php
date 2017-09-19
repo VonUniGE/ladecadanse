@@ -54,7 +54,7 @@ class UserVoter extends Voter
     private function canEdit(\Ladecadanse\Entity\User $subject, User $user)
     {       
         
-        if ($user->hasRole('ROLE_SUPERADMIN') || $user->hasRole('ROLE_ADMIN') || $subject->getId() === $user->getId()) {
+        if ($user->hasRole('ROLE_SUPERADMIN') || $user->hasRole('ROLE_ADMIN') || $subject == $user) {
             return true;
         }        
         

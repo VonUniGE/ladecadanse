@@ -1,0 +1,23 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<p>
+    <h3>{{ title }}</h3>
+    {% if eventForm %}
+        {{ form_start(eventForm) }}         
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Ajouter" />
+            </div>
+        {{ form_end(eventForm) }}
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+    {% else %}
+        <a href="{{ path('login') }} ">Log in</a> to add events.
+    {% endif %}
+</p>
+{% endblock %}

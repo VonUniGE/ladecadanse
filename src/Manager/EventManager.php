@@ -7,27 +7,22 @@ use Ladecadanse\Entity\Event;
 class EventManager extends Manager
 {
     private $organizerManager;    
-    private $venueManager;    
-    private $userManager;    
-    private $placeManager;    
+    private $placeManager;   
+    private $userManager;       
 
     public function setOrganizerManager(OrganizerManager $organizerManager)
     {
         $this->organizerManager = $organizerManager;
     }
-    
-    public function setVenueManager(VenueManager $venueManager)
-    {
-        $this->venueManager = $venueManager;
-    }
+
+    public function setPlaceManager(PlaceManager $placeManager) {
+        $this->placeManager = $placeManager;
+    } 
     
     public function setUserManager(UserManager $userManager) {
         $this->userManager = $userManager;
     }
     
-    public function setPlaceManager(PlaceManager $placeManager) {
-        $this->placeManager = $placeManager;
-    } 
     
     public function findAllToday() {
         $sql = "select * from evenement WHERE dateEvenement = '2017-06-23' ORDER BY dateAjout DESC ";
@@ -86,7 +81,7 @@ class EventManager extends Manager
     // TODO: findAllByDay(Date d)
     
     public function find($id) {
-        $sql = "select * from evenement where idevenement = ?";
+        $sql = "select * from event where id = ?";
         $row = $this->getDb()->fetchAssoc($sql, [$id]);
 
         if ($row)
@@ -98,23 +93,29 @@ class EventManager extends Manager
 
     public function save(Event $event) {
         
-        // TODO: 
+        $localite = $event->getLocalite();
+        //dump($event); exit;
+
         $eventData = array(
-            'idPersonne' => $event->getAuthor()->getId(),
-            'idLieu' => $event->getIdLieu(),
-            'statut' => $event->getStatut(),
+            'user_id' => $event->getAuthor()->getId(),
+            'status' => $event->getStatus(), // TODO: selon ROLE et on edit seulement
             'category' => $event->getCategory(),
+            'dateEvenement' => $event->getDateEvenement(),
+            'place_id' => $event->getPlace()->getId(),
+            'nomLieu' => $event->getNomLieu(),
+            'adresse' => $event->getAdresse(),
+            'localite_id' => $localite,
+            'urlLieu' => $event->getUrlLieu(),
             'titre' => $event->getTitre(),
-            'dateEvenement' => $event->getDateEvenement()
+            'horaire_debut' => $event->getDateEvenement()." ".$event->getHoraireDebut()
             );
+        
+        // TODO : in table event_organizer delete rows with event_id then insert event_id - $event->getOrganizers()
 
         if ($event->getId()) {
-            // The comment has already been saved : update it
-            $this->getDb()->update('evenement', $eventData, array('id' => $event->getId()));
+            $this->getDb()->update('event', $eventData, array('id' => $event->getId()));
         } else {
-            // The comment has never been saved : insert it
-            $this->getDb()->insert('evenement', $eventData);
-            // Get the id of the newly created comment and set it on the entity.
+            $this->getDb()->insert('event', $eventData);
             $id = $this->getDb()->lastInsertId();
             $event->setId($id);
         }
@@ -123,7 +124,12 @@ class EventManager extends Manager
     public function buildDomainObject(array $row)
     {
         $event = new Event($row);  
-  
+
+        // pas traité par l'hydrateur
+        $event->setLocalite($row['localite_id']);
+        $event->setHoraireDebut($row['horaire_debut']);
+   
+        
         // event author
         if (array_key_exists('user_id', $row)) {
 

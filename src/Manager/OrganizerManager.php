@@ -79,13 +79,10 @@ class OrganizerManager extends Manager
             $user = $this->userManager->find($row['user_id']);
             $organizer->setAuthor($user);
         }
-//        
-//        // members
+      
+        // members
         $members = $this->userManager->findOrganizerMembers($row['id']);
         $organizer->setMembers($members);
- 
-        // TODO: 
-        // places (0-5 : Place) utile dans admin
         
         return $organizer;
 

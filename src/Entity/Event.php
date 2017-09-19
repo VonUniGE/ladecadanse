@@ -30,7 +30,7 @@ class Event extends Entity
     
     /**
      *
-     * @var string enum('actif', 'inactif', 'annule', 'complet'
+     * @var string enum('actif', 'inactif', 'annule', 'complet')
      */
     protected $status;
     
@@ -44,18 +44,22 @@ class Event extends Entity
     protected $nomLieu;
     protected $adresse;
     protected $quartier;
-    protected $localite_id;
-    protected $region;
-    protected $urlLieu;
     
-    protected $horaire_debut;
+    /*
+     * @var array
+     */
+    protected $localite;
+    protected $urlLieu;
+
+    protected $description;
+    protected $ref;    
+    protected $horaireDebut;
     protected $horaire_fin;
     protected $horaire_complement;
-    protected $description;
+
     protected $prix;
     protected $prelocations;
-    protected $ref;
-    
+   
     protected $created;
     protected $modified;
 
@@ -245,29 +249,17 @@ class Event extends Entity
         return $this;
     }
     
-    public function getLocalite_id()
+    public function getLocalite()
     {
-        return $this->localite_id;
+        return $this->localite;
     }
 
-    public function setLocalite_id($localite_id)
+    public function setLocalite($localite)
     {
-        $this->localite_id = $localite_id;
+        $this->localite = $localite;
 
         return $this;
-    } 
-    
-    public function getRegion()
-    {
-        return $this->region;
-    }
-
-    public function setRegion($region)
-    {
-        $this->region = $region;
-
-        return $this;
-    }      
+    }     
     
     public function getUrlLieu()
     {
@@ -281,14 +273,38 @@ class Event extends Entity
         return $this;
     }
     
-    public function getHoraire_debut()
+    public function getDescription()
     {
-        return $this->horaire_debut;
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+
+        return $this;
+    }  
+    
+    public function getHoraireDebut()
+    {
+        return $this->horaireDebut;
     }
     
-    public function setHoraire_debut($horaire_debut)
+    public function setHoraireDebut($horaireDebut)
     {
-        $this->horaire_debut = $horaire_debut;
+        $this->horaireDebut = $horaireDebut;
 
         return $this;
     }
@@ -315,19 +331,7 @@ class Event extends Entity
         $this->horaire_complement = $horaire_complement;
 
         return $this;
-    }    
-    
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }   
+    }     
  
     public function getPrix()
     {
@@ -351,19 +355,7 @@ class Event extends Entity
         $this->prelocations = $prelocations;
 
         return $this;
-    }   
-
-    public function getRef()
-    {
-        return $this->ref;
-    }
-
-    public function setRef($ref)
-    {
-        $this->ref = $ref;
-
-        return $this;
-    }       
+    }        
     
     public function getCreated()
     {

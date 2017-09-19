@@ -11,7 +11,6 @@ use Ladecadanse\Entity\User;
 
 class OrganizerVoter extends Voter
 {
-    const ADD = 'add';
     const EDIT   = 'edit';
 
     public function supports($attribute, $subject)
@@ -22,7 +21,7 @@ class OrganizerVoter extends Voter
             return false;
         }
         
-        if (!in_array($attribute, array(self::ADD, self::EDIT)))
+        if (!in_array($attribute, array(self::EDIT)))
         {
             return false;
         }
@@ -48,28 +47,15 @@ class OrganizerVoter extends Voter
         }
 
         switch ($attribute) {
-            case self::ADD:
-                return $this->canAdd($organizer, $user);
             case self::EDIT:
                 return $this->canEdit($organizer, $user);
         }
     }    
 
-    private function canAdd(\Ladecadanse\Entity\Organizer $organizer, User $user)
-    {
-        if ($user->hasRole('ROLE_SUPERADMIN') || $user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_EDITOR')) {
-            return true;
-        }        
-        
-        return false;
-    }
-
     private function canEdit(\Ladecadanse\Entity\Organizer $organizer, User $user)
     {       
-//        var_dump($user);
-//        var_dump($organizer->getAuthor());
         // admin ou sup, auteur ou membre de ce même manager
-        if (($user->hasRole('ROLE_SUPERADMIN') || $user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_EDITOR')) || $user->getId() === $organizer->getAuthor()->getId() || $organizer->hasMember($user)) {
+        if (($user->hasRole('ROLE_SUPERADMIN') || $user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_EDITOR')) || $user == $organizer->getAuthor() || $organizer->hasMember($user)) {
     
             return true;
         }        

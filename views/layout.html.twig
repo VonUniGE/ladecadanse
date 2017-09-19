@@ -7,11 +7,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <base href="http://ladecadanse4/">
+    
     <link href="{{ asset('/lib/foundation/css/foundation.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/ladecadanse.css') }}" rel="stylesheet">
     
-    <title>La décadanse</title>
+    <title>{# title #} - La décadanse</title>
 
 </head>
 
@@ -40,14 +41,14 @@
                 </ul>
             </nav>
             {% if is_granted('ROLE_ACTOR') %}
-                <a href="">Ajouter un événement</a>
+                <a href="{{ path('event_add') }}">Ajouter un événement</a>
             {% endif %}                    
         </header>  
-                    
+        <hr>          
         <div id="content">
         {% block content %}{% endblock %}
         </div>
-
+        <hr> 
         <footer class="footer">
             <nav>
                 <ul>

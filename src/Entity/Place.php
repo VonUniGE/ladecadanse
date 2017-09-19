@@ -37,7 +37,7 @@ class Place extends \Ladecadanse\Entity\Entity
     protected $nom;
     protected $adresse;
     protected $quartier ;
-    protected $localite_id;
+    protected $localite;
     protected $region;
 //    protected $lat;
 //    protected $lng;
@@ -123,10 +123,8 @@ class Place extends \Ladecadanse\Entity\Entity
      * @return boolean
      */
     public function hasMember(User $member)
-    {
-        //dump($this->members);
-        
-        return in_array($member, $this->members); // , true
+    {       
+        return in_array($member, $this->members);
     } 
     
     public function setMembers(array $members)
@@ -222,12 +220,12 @@ class Place extends \Ladecadanse\Entity\Entity
       /**
      * Set city
      *
-     * @param string city
+     * @param array city
      * @return Place
      */
-    public function setLocalite_id($localite_id)
+    public function setLocalite($localite)
     {
-        $this->localite_id = $localite_id;
+        $this->localite = $localite;
 
         return $this;
     }
@@ -235,11 +233,11 @@ class Place extends \Ladecadanse\Entity\Entity
     /**
      * Get city
      *
-     * @return string
+     * @return array
      */
-    public function getLocalite_id()
+    public function getLocalite()
     {
-        return $this->localite_id;
+        return $this->localite;
     }
     
     public function setRegion($region)

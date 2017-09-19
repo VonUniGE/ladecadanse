@@ -5,8 +5,8 @@
 {% block content %}
 
     <h1>{{ organizer.nom }}</h1>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="organizer/form">Modifier</a>
+    {% if is_granted('edit', organizer) %}
+        <a href="">Modifier</a> {# {{ path('organizer_edit', {'id': organizer.id}) }} #}
     {% endif %}
     
     <p>Membres</p>
@@ -25,12 +25,12 @@
 
         <h2><a href="event/{{ event.id }}">{{ event.titre }}</a></h2>
         {% if is_granted('edit', event) %}
-            <a href="event/form">Modifier</a>
+            <a href="{{ path('event_edit', {'id': event.id}) }}">Modifier</a>
         {% endif %}        
         <h3>{{ event.dateEvenement|date('D j M Y') }}</h3>
         <p>{{ event.description }}</p>
         
-        <p>{{ event.horaire_debut|date('G i') }} - {{ event.horaire_fin|date('G i') }} {{ event.horaire_complement }} <br />{{ event.prix }}</p>
+        <p>{{ event.horaireDebut|date('G i') }} - {{ event.horaire_fin|date('G i') }} {{ event.horaire_complement }} <br />{{ event.prix }}</p>
 
         <p>{{ event.category }}</p>
         <p>{{ event.nomLieu }}</p>
