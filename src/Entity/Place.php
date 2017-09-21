@@ -37,8 +37,9 @@ class Place extends \Ladecadanse\Entity\Entity
     protected $nom;
     protected $adresse;
     protected $quartier ;
-    protected $localite;
-    protected $region;
+    protected $townId;
+    protected $townName;
+    protected $townRegion;  
 //    protected $lat;
 //    protected $lng;
 //    protected $horaire_general;
@@ -217,28 +218,41 @@ class Place extends \Ladecadanse\Entity\Entity
         return $this->quartier;
     }
     
-      /**
-     * Set city
-     *
-     * @param array city
-     * @return Place
-     */
-    public function setLocalite($localite)
+    public function getTownId()
     {
-        $this->localite = $localite;
+        return $this->townId;
+    }
+
+    public function setTownId($townId)
+    {
+        $this->townId = $townId;
 
         return $this;
+    }     
+
+    public function getTownName()
+    {
+        return $this->townName;
     }
 
-    /**
-     * Get city
-     *
-     * @return array
-     */
-    public function getLocalite()
+    public function setTownName($townName)
     {
-        return $this->localite;
+        $this->townName = $townName;
+
+        return $this;
+    }     
+    
+    public function getTownRegion()
+    {
+        return $this->townRegion;
     }
+
+    public function setTownRegion($townRegion)
+    {
+        $this->townRegion = $townRegion;
+
+        return $this;
+    } 
     
     public function setRegion($region)
     {

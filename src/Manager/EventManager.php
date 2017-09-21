@@ -38,7 +38,9 @@ class EventManager extends Manager
     
     public function findAllByOrganizer($organizerId) {
         
-        $sql = "select * from event e, event_organizer eo WHERE e.id = eo.event_id AND eo.organizer_id = $organizerId ORDER BY created DESC ";
+        $sql = "select e.*, t.name AS townName, t.region AS townRegion FROM event e, town t, event_organizer eo "
+                . "WHERE t.id = e.townId AND e.id = eo.event_id AND eo.organizer_id = $organizerId ORDER BY created DESC ";
+        
         $result = $this->db->fetchAll($sql);
 
         $events = [];
@@ -81,7 +83,7 @@ class EventManager extends Manager
     // TODO: findAllByDay(Date d)
     
     public function find($id) {
-        $sql = "select * from event where id = ?";
+        $sql = "select e.*, t.name AS townName, t.region AS townRegion FROM event e, town t WHERE e.townId = t.id AND e.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, [$id]);
 
         if ($row)
@@ -92,10 +94,7 @@ class EventManager extends Manager
     
 
     public function save(Event $event) {
-        
-        $localite = $event->getLocalite();
-        //dump($event); exit;
-
+       
         $eventData = array(
             'user_id' => $event->getAuthor()->getId(),
             'status' => $event->getStatus(), // TODO: selon ROLE et on edit seulement
@@ -104,7 +103,9 @@ class EventManager extends Manager
             'place_id' => $event->getPlace()->getId(),
             'nomLieu' => $event->getNomLieu(),
             'adresse' => $event->getAdresse(),
-            'localite_id' => $localite,
+            'townId' => $event->getTownId(),
+            'townName' => $event->getTownName(),
+            'townRegion' => $event->getTownRegion(),
             'urlLieu' => $event->getUrlLieu(),
             'titre' => $event->getTitre(),
             'horaire_debut' => $event->getDateEvenement()." ".$event->getHoraireDebut()
@@ -126,9 +127,7 @@ class EventManager extends Manager
         $event = new Event($row);  
 
         // pas traité par l'hydrateur
-        $event->setLocalite($row['localite_id']);
-        $event->setHoraireDebut($row['horaire_debut']);
-   
+        $event->setHoraireDebut($row['horaire_debut']);   
         
         // event author
         if (array_key_exists('user_id', $row)) {

@@ -24,6 +24,7 @@ $app->get('/organizer/{id}', function ($id) use ($app) {
 //        return;
 
     $events = $app['manager.event']->findAllByOrganizer($id);
+    //dump($events);
     return $app['twig']->render('organizer.html.twig', ['organizer' => $organizer, 'events' => $events]);
 })->bind('organizer');
 
@@ -55,9 +56,21 @@ $app->match('/event/add', function (Request $request) use ($app) {
         
         // all active places, Place 
         $options['places'] = $app['manager.place']->findAll();
+        $options['towns'] = $app['manager.town']->findAll();
+        
+        //dump($options['towns']);
         $eventForm = $app['form.factory']->create(EventType::class, $event, $options);
         $eventForm->handleRequest($request);
         if ($eventForm->isSubmitted() && $eventForm->isValid()) {
+           
+            if (!empty($event->getTownId()))
+            {
+                $eventTown = $app['manager.town']->find($event->getTownId());      
+                
+                $event->setTownName($eventTown['name']);
+                $event->setTownRegion($eventTown['region']);
+            }
+            
             $app['manager.event']->save($event);
             $app['session']->getFlashBag()->add('success', 'Your event was successfully added.');
         }
@@ -75,10 +88,21 @@ $app->match('/event/add', function (Request $request) use ($app) {
 $app->match('/event/{id}/edit', function($id, Request $request) use ($app) {
     
     $event = $app['manager.event']->find($id);
-    $eventForm = $app['form.factory']->create(EventType::class, $event);
+        $options['places'] = $app['manager.place']->findAll();
+        $options['towns'] = $app['manager.town']->findAll();    
+    
+    $eventForm = $app['form.factory']->create(EventType::class, $event, $options);
     $eventForm->handleRequest($request);
     
     if ($eventForm->isSubmitted() && $eventForm->isValid()) {
+        
+        if (!empty($event->getTownId()))
+        {
+            $eventTown = $app['manager.town']->find($event->getTownId());      
+
+            $event->setTownName($eventTown['name']);
+            $event->setTownRegion($eventTown['region']);
+        }        
         $app['manager.event']->save($event);
         $app['session']->getFlashBag()->add('success', 'The event was successfully updated.');
     }

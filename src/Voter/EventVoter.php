@@ -67,12 +67,14 @@ class EventVoter extends Voter
             $event_organizers_users = array_merge($event_organizers_users, $organizer->getMembers());
         }
         
+        $event_place_organizers_users = [];
+        $event_place_users = [];
         if (!empty($event->getPlace()))
         {
             // membres des organisateurs du lieu de l'even
             $place_organizers = $event->getPlace()->getOrganizers();      
             //TODO ôter doublons
-            $event_place_organizers_users = [];
+            
             foreach ($place_organizers as $organizer)
             {
                 $event_place_organizers_users = array_merge($event_place_organizers_users, $organizer->getMembers());

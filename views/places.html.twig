@@ -14,7 +14,7 @@
         {% if is_granted('edit', place) %}
             <a href="place/form">Modifier</a>
         {% endif %}
-        <p>{{ place.adresse }} ({{ place.quartier }}) - {{ place.localite_id }}</p>
+        <p>{{ place.adresse }} ({{ place.quartier }}) - {{ place.townName }} {{ place.townRegion|upper }}</p>
 
     </article>
 

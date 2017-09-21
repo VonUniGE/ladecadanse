@@ -43,10 +43,9 @@ class EventType extends AbstractType
         ->add('place', ChoiceType::class, 
                 array(
                     'choices' => 
-                    $options['places']
-                    ,
+                    $options['places'],
                     'choice_label' => function($place, $key, $index) {
-                        return strtoupper($place->getNom());
+                        return strtoupper($place->getNom())." ".$place->getTownName()." ".$place->getTownRegion();
                     },
                     'choice_value' => function($place) {
  
@@ -56,17 +55,15 @@ class EventType extends AbstractType
                             return $place->getId();
                     },                             
                     'required' => true, 'label' => 'Lieu')
-                )
-                
-                /**
-                 * choices [$options['places']
-                 * 
-                 * 
-                 */
-                
+                )                
         ->add('nomLieu', TextType::class, array('required' => false, 'label' => 'Nom du lieu'))
         ->add('adresse', TextType::class, array('required' => false, 'label' => 'Rue et n°'))
-        ->add('localite', TextType::class, array('required' => false, 'label' => 'Localité'))
+        ->add('townId', ChoiceType::class, 
+                array(
+                    'choices' => 
+                    array_flip($options['towns']),                      
+                    'required' => true, 'label' => 'Localité')
+                )                              
         ->add('titre', TextType::class)
         ->add('horaireDebut', TextType::class, array('label' => 'Début'))               
         ;
@@ -78,7 +75,8 @@ class EventType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Ladecadanse\Entity\Event',
-            'places' => null
+            'places' => null,
+            'towns' => null
         ));
     }
 

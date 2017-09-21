@@ -21,7 +21,7 @@ class PlaceManager extends Manager
     }
     
     public function findAll() {
-        $sql = "select * from place WHERE status='actif' ORDER BY created DESC";
+        $sql = "select * FROM place p, town t WHERE p.townId = t.id AND status='actif' ORDER BY created DESC";
         $result = $this->db->fetchAll($sql);
         // Convert query result to an array of domain objects
         $o = [];
@@ -33,7 +33,7 @@ class PlaceManager extends Manager
     }
     
     public function find($id) {
-        $sql = "select * from place WHERE id=$id";
+        $sql = "select * FROM place p, town t WHERE p.townId = t.id AND p.id=$id";
         $result = $this->db->fetchAll($sql);
  
         return $this->buildDomainObject($result[0]);

@@ -41,14 +41,13 @@ class Event extends Entity
     protected $category;
     protected $titre;
     protected $dateEvenement;
+    
     protected $nomLieu;
     protected $adresse;
     protected $quartier;
-    
-    /*
-     * @var array
-     */
-    protected $localite;
+    protected $townId;
+    protected $townName;
+    protected $townRegion;    
     protected $urlLieu;
 
     protected $description;
@@ -56,7 +55,6 @@ class Event extends Entity
     protected $horaireDebut;
     protected $horaire_fin;
     protected $horaire_complement;
-
     protected $prix;
     protected $prelocations;
    
@@ -249,17 +247,41 @@ class Event extends Entity
         return $this;
     }
     
-    public function getLocalite()
+    public function getTownId()
     {
-        return $this->localite;
+        return $this->townId;
     }
 
-    public function setLocalite($localite)
+    public function setTownId($townId)
     {
-        $this->localite = $localite;
+        $this->townId = $townId;
 
         return $this;
     }     
+
+    public function getTownName()
+    {
+        return $this->townName;
+    }
+
+    public function setTownName($townName)
+    {
+        $this->townName = $townName;
+
+        return $this;
+    }     
+    
+    public function getTownRegion()
+    {
+        return $this->townRegion;
+    }
+
+    public function setTownRegion($townRegion)
+    {
+        $this->townRegion = $townRegion;
+
+        return $this;
+    }         
     
     public function getUrlLieu()
     {

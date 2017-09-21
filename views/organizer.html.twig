@@ -33,7 +33,7 @@
         <p>{{ event.horaireDebut|date('G i') }} - {{ event.horaire_fin|date('G i') }} {{ event.horaire_complement }} <br />{{ event.prix }}</p>
 
         <p>{{ event.category }}</p>
-        <p>{{ event.nomLieu }}</p>
+        <p>{{ event.nomLieu }} {{ event.townName }} {{ event.townRegion }}</p>
         <p>Organisateurs</p>
         <ul>
         {% for orga in event.organizers %}

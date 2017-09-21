@@ -109,3 +109,7 @@ $app['manager.event'] = function ($app) {
     $eventManager->setPlaceManager($app['manager.place']);
     return $eventManager;
 };
+
+$app['manager.town'] = function ($app) {
+    return new Ladecadanse\Manager\TownManager($app['db']);
+};   
