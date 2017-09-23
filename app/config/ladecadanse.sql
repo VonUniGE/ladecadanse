@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 15 Septembre 2017 à 18:37
+-- Généré le :  Sam 23 Septembre 2017 à 19:40
 -- Version du serveur :  10.1.13-MariaDB
 -- Version de PHP :  5.6.21
 
@@ -38,8 +38,9 @@ CREATE TABLE `event` (
   `nomLieu` varchar(255) DEFAULT NULL,
   `adresse` text,
   `quartier` varchar(255) DEFAULT NULL,
-  `localite_id` smallint(6) DEFAULT NULL,
-  `region` varchar(2) DEFAULT NULL,
+  `townId` smallint(6) DEFAULT NULL,
+  `townName` varchar(255) DEFAULT NULL,
+  `townRegion` varchar(2) DEFAULT NULL,
   `urlLieu` varchar(255) DEFAULT NULL,
   `horaire_debut` datetime DEFAULT NULL,
   `horaire_fin` datetime DEFAULT NULL,
@@ -62,20 +63,6 @@ CREATE TABLE `event_organizer` (
   `event_id` mediumint(9) NOT NULL,
   `organizer_id` mediumint(9) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `localite`
---
-
-CREATE TABLE `localite` (
-  `id` int(6) NOT NULL,
-  `localite` varchar(255) NOT NULL,
-  `commune` varchar(255) NOT NULL,
-  `npa` int(4) NOT NULL,
-  `canton` varchar(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -111,7 +98,9 @@ CREATE TABLE `place` (
   `adresse` varchar(80) NOT NULL DEFAULT '',
   `address_details` varchar(255) DEFAULT NULL,
   `quartier` varchar(255) NOT NULL DEFAULT 'Plainpalais',
-  `localite_id` smallint(6) NOT NULL,
+  `townId` smallint(6) NOT NULL,
+  `townName` varchar(255) NOT NULL,
+  `townRegion` varchar(2) DEFAULT NULL,
   `horaire_general` text NOT NULL,
   `categories` set('bistrot','salle','restaurant','cinema','theatre','galerie','boutique','musee','autre') NOT NULL,
   `URL` varchar(255) NOT NULL DEFAULT '',
@@ -130,6 +119,20 @@ CREATE TABLE `place_organizer` (
   `organizer_id` mediumint(9) NOT NULL,
   `place_id` mediumint(9) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `town`
+--
+
+CREATE TABLE `town` (
+  `id` int(6) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `commune` varchar(255) NOT NULL,
+  `npa` int(4) NOT NULL,
+  `region` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -201,12 +204,6 @@ ALTER TABLE `event_organizer`
   ADD PRIMARY KEY (`event_id`,`organizer_id`);
 
 --
--- Index pour la table `localite`
---
-ALTER TABLE `localite`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Index pour la table `organizer`
 --
 ALTER TABLE `organizer`
@@ -225,6 +222,12 @@ ALTER TABLE `place`
 --
 ALTER TABLE `place_organizer`
   ADD PRIMARY KEY (`organizer_id`,`place_id`);
+
+--
+-- Index pour la table `town`
+--
+ALTER TABLE `town`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `user`
@@ -253,27 +256,27 @@ ALTER TABLE `user_place`
 -- AUTO_INCREMENT pour la table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118675;
---
--- AUTO_INCREMENT pour la table `localite`
---
-ALTER TABLE `localite`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1110;
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `organizer`
 --
 ALTER TABLE `organizer`
-  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `place`
 --
 ALTER TABLE `place`
-  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=278;
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `town`
+--
+ALTER TABLE `town`
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3905;
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
