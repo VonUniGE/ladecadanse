@@ -64,7 +64,26 @@ class OrganizerManager extends Manager
         }
         
         return $organizers;
-    }   
+    } 
+    
+    public function save(Organizer $organizer) {
+       
+        $organizerData = array(
+            'user_id' => $organizer->getAuthor()->getId(),
+            'status' => $organizer->getStatus(), // TODO: selon ROLE et on edit seulement
+            'nom' => $organizer->getNom(),
+            'URL' => $organizer->getURL(),
+            'presentation' => $organizer->getPresentation()
+            );
+
+        if ($organizer->getId()) {
+            $this->getDb()->update('organizer', $organizerData, array('id' => $organizer->getId()));
+        } else {
+            $this->getDb()->insert('organizer', $organizerData);
+            $id = $this->getDb()->lastInsertId();
+            $organizer->setId($id);
+        }
+    }        
     
     public function buildDomainObject(array $row)
     {

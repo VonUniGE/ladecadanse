@@ -5,24 +5,29 @@
 {% block content %}
 
     <h1>Organisateurs</h1>
-
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('organizer_add') }}">Ajouter un organisateur</a>
+    {% endif %}   
+    
     {% for organizer in organizers %}
 
     <article>
 
         <h2><a href="organizer/{{ organizer.id }}">{{ organizer.nom }}</a></h2>
-
+        {% if is_granted('edit', organizer) %}
+            <a href="{{ path('organizer_edit', {'id': organizer.id}) }}">Modifier</a>
+        {% endif %} 
         <p>{{ organizer.adresse }}</p>
         <p>{{ organizer.URL }}</p>
         <p>{{ organizer.presentation }}</p>
         <p>{{ organizer.author.username }}</p>
         
         <h3>Membres</h3>
-            <ul>
-                {% for member in organizer.members %}
-                <li>{{ member.username }}</li>
-                {% endfor %}
-            </ul>
+        <ul>
+            {% for member in organizer.members %}
+            <li>{{ member.username }}</li>
+            {% endfor %}
+        </ul>
         
     </article>
 

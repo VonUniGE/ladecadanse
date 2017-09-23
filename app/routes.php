@@ -2,7 +2,9 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Ladecadanse\Entity\Event;
+use Ladecadanse\Entity\Organizer;
 use Ladecadanse\Form\EventType;
+use Ladecadanse\Form\OrganizerType;
 
 $app->get('/', function () use ($app) {
     
@@ -27,6 +29,61 @@ $app->get('/organizer/{id}', function ($id) use ($app) {
     //dump($events);
     return $app['twig']->render('organizer.html.twig', ['organizer' => $organizer, 'events' => $events]);
 })->bind('organizer');
+
+$app->match('/organizers/add', function (Request $request) use ($app) {
+    
+    $organizerFormView = null;
+    
+    if ($app['security.authorization_checker']->isGranted('ROLE_ADMIN')) {
+
+        // par défaut
+        $organizer = new Organizer([]);
+        $organizer->setAuthor($app['user']);
+        $organizer->setStatus('actif');         
+        
+        $organizerForm = $app['form.factory']->create(OrganizerType::class, $organizer);
+        $organizerForm->handleRequest($request);
+        if ($organizerForm->isSubmitted() && $organizerForm->isValid()) {
+           
+            
+            $app['manager.organizer']->save($organizer);
+            $app['session']->getFlashBag()->add('success', 'The organizer was successfully added.');
+        }
+        $organizerFormView = $organizerForm->createView();
+    }
+
+    return $app['twig']->render('organizer_form.html.twig', array(
+        'title' => 'Add organizer',
+        'organizerForm' => $organizerFormView));
+})->bind('organizer_add');
+
+$app->match('/organizer/{id}/edit', function($id, Request $request) use ($app) {
+    
+    $organizerFormView = null;
+    $organizer = $app['manager.organizer']->find($id);  
+    
+    if ($app['security.authorization_checker']->isGranted('edit', $organizer))
+    {    
+        $options['user_roles'] = [
+            'ROLE_EDITOR' => $app['security.authorization_checker']->isGranted('ROLE_EDITOR'), 
+            'ROLE_ADMIN' => $app['security.authorization_checker']->isGranted('ROLE_ADMIN')
+            ];         
+
+        $organizerForm = $app['form.factory']->create(OrganizerType::class, $organizer, $options);
+        $organizerForm->handleRequest($request);
+
+        if ($organizerForm->isSubmitted() && $organizerForm->isValid()) {             
+            $app['manager.organizer']->save($organizer);
+            $app['session']->getFlashBag()->add('success', 'The organizer was successfully updated.');
+        }
+
+        $organizerFormView = $organizerForm->createView();
+    }
+    
+    return $app['twig']->render('organizer_form.html.twig', array(
+        'title' => 'Edit organizer',
+        'organizerForm' => $organizerFormView));
+})->bind('organizer_edit');
 
 $app->get('/places', function () use ($app) {
     $places = $app['manager.place']->findAll();
