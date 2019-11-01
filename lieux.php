@@ -104,7 +104,7 @@ function initMap() {
 			map: map
            // icon: {                               url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"                           }
 		});
-		
+        
 		bounds.extend(marker.getPosition());
 		
 		var contentString = '<div class="vd-marker-infowindow"><a href="lieu.php?idL=' + this['idLieu'] + '"><b>' + this['nom'] + '</b></a><br>' + this['categorie'] + '<br>' + this['adresse'] + '<br>' + this['quartier'];
@@ -153,6 +153,9 @@ $map_style = 'style="width:94%;margin:0 auto;height:500px;border:1px solid #555;
     
     
     <div id="map" <?php echo $map_style ?>></div>
+    <?php if (in_array($_SESSION['region'], ['ge', 'rf', 'hs'])) { ?>
+    <p style="width:94%;margin:0 auto;">Et aussi la <a href="https://epic-magazine.ch/lieux/" target="_blank">carte interactive de EPIC Magazine</a> avec une sélection de lieux à Genève et leur description complète (particularités, esprit, anecdotes...)</p>
+    <?php } ?>
  <div style="clear:both"></div>
 	
     <div id="derniers_lieux" style="width:94%;margin:0 auto;">
